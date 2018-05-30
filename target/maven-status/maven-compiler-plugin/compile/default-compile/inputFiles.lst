@@ -1,0 +1,8 @@
+/opt/theatro/src/api/src/main/java/com/theatro/api/response/Employee.java
+/opt/theatro/src/api/src/main/java/com/theatro/api/response/Group.java
+/opt/theatro/src/api/src/main/java/com/theatro/api/controller/EmployeeController.java
+/opt/theatro/src/api/src/main/java/com/theatro/api/service/EmployeeService.java
+/opt/theatro/src/api/src/main/java/com/theatro/api/controller/GroupController.java
+/opt/theatro/src/api/src/main/java/com/theatro/api/service/GroupService.java
+/opt/theatro/src/api/src/main/java/com/theatro/api/config/SwaggerConfig.java
+/opt/theatro/src/api/src/main/java/com/theatro/api/Main.java
