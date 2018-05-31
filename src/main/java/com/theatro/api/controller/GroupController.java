@@ -28,10 +28,10 @@ public class GroupController {
     @Autowired
     private GroupService groupService;
 
-    @ApiOperation(value = "Get All Departments in a store", response = List.class )
+    @ApiOperation(value = "Get All Departments in a store", response = Group.class,responseContainer = "List")
     @RequestMapping(value = "/department/",method = RequestMethod.GET,produces = "application/json")
-    public Iterable<Group> listDepartments(){
-        return groupService.listGroups();
+    public List<Group> listDepartments(String name){
+        return groupService.listGroups(name);
     }
 
 
