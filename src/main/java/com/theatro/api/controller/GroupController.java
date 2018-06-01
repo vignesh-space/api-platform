@@ -9,9 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +18,6 @@ import java.util.List;
 
 @RestController
 @Api(value="Department API", description="API to work on Departments in Store")
-
 public class GroupController {
 
     public static final Logger LOGGER= LoggerFactory.getLogger(GroupController.class);
@@ -29,16 +26,16 @@ public class GroupController {
     private GroupService groupService;
 
     @ApiOperation(value = "Get All Departments in a store", response = Group.class,responseContainer = "List")
-    @RequestMapping(value = "/department/",method = RequestMethod.GET,produces = "application/json")
-    public List<Group> listDepartments(String name){
+    @RequestMapping(value = "department",method = RequestMethod.GET,produces = "application/json")
+    public List<Group> listDepartments(@RequestParam("store")String name){
         return groupService.listGroups(name);
     }
 
 
     @ApiOperation(value = "Get the Details of an employee in a store", response = Group.class)
-    @RequestMapping(value = "/department/id",method = RequestMethod.GET,produces = "application/json")
-    public Group getGroup(String id){
-        return groupService.getGroup(id);
+    @RequestMapping(value = "department/{name}",method = RequestMethod.GET,produces = "application/json")
+    public Group getGroup(@PathVariable("name")String department , @RequestParam("store")String store ){
+        return groupService.getGroup(store,department);
     }
 
 }

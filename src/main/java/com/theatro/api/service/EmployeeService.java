@@ -14,11 +14,11 @@ public class EmployeeService {
     @Autowired
     EmployeeDao employeeDao;
 
-    public List<Employee> fetchEmployeeList( ){
-        return employeeDao.getEmployeeList();
+    public List<Employee> fetchEmployeeList(String storename ){
+        return employeeDao.getEmployeeList(storename);
     }
 
-    public Employee getEmployee(String id){
-        return employeeDao.getEmployeeDetails(id);
+    public Employee getEmployee(String fullname, String storename){
+        return employeeDao.getEmployeeDetails(fullname,storename);
     }
 }

@@ -1,6 +1,7 @@
 package com.theatro.api.dao;
 
 import com.theatro.api.dbutils.DatabaseUtil;
+import com.theatro.api.response.Employee;
 import com.theatro.api.response.Group;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,9 +55,30 @@ public class GroupDao {
 
     }
 
-    public Group getGroup(String groupName){
+    public Group getGroup(String store,String groupName){
         Group group = new Group();
         group.setName(groupName);
+        int storeId = databaseUtil.getStoreIdbyName(store);
+        String SQL = "select e.tagoutname , e.employeeid from employees e where e.employeeid in ( select employeeid from employeegroups" +
+                " where groupid = ( select groupid from groups where name= ? and storeid= ?))";
+
+        bizJdbcTemplate.query(SQL,new Object[]{groupName,storeId},new ResultSetExtractor<Group>() {
+            @Override
+            public Group extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+                List<Employee> employeeList = new ArrayList<>();
+                while (resultSet.next()) {
+                    Employee employee = new Employee();
+                    String firstname = resultSet.getString("tagoutname").split(" ")[0];
+                    employee.setFirstName(firstname);
+                    String lastname = resultSet.getString("tagoutname").split(" ")[1];
+                    employee.setLastName(lastname);
+                    employee.setEmployeeId(resultSet.getString("employeeid"));
+                    employeeList.add(employee);
+                }
+                group.setEmployeeList(employeeList);
+                return group;
+            }
+        });
         return group;
 
     }

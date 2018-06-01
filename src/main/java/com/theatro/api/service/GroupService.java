@@ -17,7 +17,7 @@ public class GroupService {
     public List<Group> listGroups(String storeName){
         return groupDao.getGroupList(storeName);
     }
-    public Group getGroup(String groupName){
-        return groupDao.getGroup(groupName);
+    public Group getGroup(String store,String group){
+        return groupDao.getGroup(store,group);
     }
 }

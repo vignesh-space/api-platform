@@ -34,40 +34,62 @@ public class EmployeeDao {
     }
 
 
-    public Employee getEmployeeDetails(String fullName){
-        Employee employee = null;
-        String SQL = "SELECT firstname,lastname,tagoutname from employees where tagoutname=?";
-        bizJdbcTemplate.query(SQL,new Object[]{fullName},new ResultSetExtractor<Employee>() {
-            @Override
-            public Employee extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+    public Employee getEmployeeDetails(String fullName,String storename){
+        Employee employee = new Employee();
+        int storeId = databaseUtil.getStoreIdbyName(storename);
+        LOGGER.info("Store ID for store name <{}> is <{}>",storename,storeId);
+        if(storeId > 0 ){
+            String SQL =  "SELECT e.firstname, e.lastname ,e.employeeid from employees e where e.tagoutname = ? and e.employeeid in " +
+                    "( select employeeid from employeestores where storeid = ?)";
+            final Employee query = bizJdbcTemplate.query(SQL, new Object[]{fullName, storeId}, new ResultSetExtractor<Employee>() {
+                @Override
+                public Employee extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+                    while (resultSet.next()) {
+                        employee.setFirstName(resultSet.getString("firstname"));
+                        employee.setLastName(resultSet.getString("lastname"));
+                        employee.setEmployeeId(resultSet.getString("employeeid"));
+                        LOGGER.debug("Employee details are firstname < {} > lastname < {} >", employee.getFirstName(), employee.getLastName());
 
-                while (resultSet.next()) {
-                    employee.setFirstName(resultSet.getString("firstname"));
-                    employee.setLastName(resultSet.getString("lastname"));
+                    }
+                    return employee;
                 }
-                return employee;
-            }
-        });
+            });
+        }else {
+            LOGGER.error("Invalid store name received <{}>",storename);
+        }
+
         return employee;
     }
 
 
-    public List<Employee> getEmployeeList(){
+    public List<Employee> getEmployeeList(String storename){
         List<Employee> employeeList = new ArrayList<>();
-        String SQL = "SELECT firstname,lastname,tagoutname from employees";
-        bizJdbcTemplate.query(SQL,new ResultSetExtractor<List<Employee>>() {
-            @Override
-            public List<Employee> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+        int storeId = databaseUtil.getStoreIdbyName(storename);
+        LOGGER.info("Store ID for store name <{}> is <{}>",storename,storeId);
 
-                while (resultSet.next()) {
-                    Employee employee = new Employee();
-                    employee.setFirstName(resultSet.getString("firstname"));
-                    employee.setLastName(resultSet.getString("lastname"));
-                    employeeList.add(employee);
+        if(storeId > 0){
+
+
+            String SQL = "SELECT firstname,lastname,tagoutname from employees where employeeid in ( select employeeid from " +
+                    "employeestores where storeid = ?)";
+            bizJdbcTemplate.query(SQL,new Object[]{storeId},new ResultSetExtractor<List<Employee>>() {
+                @Override
+                public List<Employee> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+
+                    while (resultSet.next()) {
+                        Employee employee = new Employee();
+                        employee.setFirstName(resultSet.getString("firstname"));
+                        employee.setLastName(resultSet.getString("lastname"));
+                        employeeList.add(employee);
+                    }
+                    return employeeList;
                 }
-                return employeeList;
-            }
-        });
+            });
+
+        }  else{
+            LOGGER.error("Invalid store name < {} > ",storename);
+        }
         return employeeList;
+
     }
 }
