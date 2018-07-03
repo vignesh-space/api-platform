@@ -30,7 +30,11 @@ public class EmployeeServiceTest {
         employee.setLastName("TestCase");
         employee.setEmployeeId("10");
 
-        when(employeeService.getEmployee(employee.getEmployeeId(),employee.getFirstName())).thenReturn(employee);
+        try {
+            when(employeeService.getEmployee(employee.getEmployeeId(),employee.getFirstName())).thenReturn(employee);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         assertEquals("JUnit",employee.getFirstName());
     }
 }

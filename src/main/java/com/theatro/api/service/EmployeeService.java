@@ -18,7 +18,7 @@ public class EmployeeService {
         return employeeDao.getEmployeeList(storename);
     }
 
-    public Employee getEmployee(String fullname, String storename){
+    public Employee getEmployee(String fullname, String storename) throws Exception{
         return employeeDao.getEmployeeDetails(fullname,storename);
     }
 }

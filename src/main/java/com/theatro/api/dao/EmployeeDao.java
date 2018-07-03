@@ -35,10 +35,14 @@ public class EmployeeDao {
 
 
     public Employee getEmployeeDetails(String fullName,String storename){
-        Employee employee = new Employee();
         int storeId = databaseUtil.getStoreIdbyName(storename);
         LOGGER.info("Store ID for store name <{}> is <{}>",storename,storeId);
-        if(storeId > 0 ){
+        Employee employee = new Employee();
+        if(storeId < 0 ) {
+            LOGGER.error("Invalid store name received <{}>",storename);
+        }
+        else
+        {
             String SQL =  "SELECT e.firstname, e.lastname ,e.employeeid from employees e where e.tagoutname = ? and e.employeeid in " +
                     "( select employeeid from employeestores where storeid = ?)";
             final Employee query = bizJdbcTemplate.query(SQL, new Object[]{fullName, storeId}, new ResultSetExtractor<Employee>() {
@@ -54,10 +58,10 @@ public class EmployeeDao {
                     return employee;
                 }
             });
-        }else {
-            LOGGER.error("Invalid store name received <{}>",storename);
         }
-
+        if(employee.getEmployeeId() == null) {
+            LOGGER.error("employee not found {}",fullName);
+        }
         return employee;
     }
 
@@ -68,8 +72,6 @@ public class EmployeeDao {
         LOGGER.info("Store ID for store name <{}> is <{}>",storename,storeId);
 
         if(storeId > 0){
-
-
             String SQL = "SELECT firstname,lastname,tagoutname from employees where employeeid in ( select employeeid from " +
                     "employeestores where storeid = ?)";
             bizJdbcTemplate.query(SQL,new Object[]{storeId},new ResultSetExtractor<List<Employee>>() {

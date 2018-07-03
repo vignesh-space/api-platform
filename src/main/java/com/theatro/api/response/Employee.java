@@ -13,6 +13,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @ApiModelProperty(notes = "Theatro generated Employee ID")
     @JsonProperty(value="id")
+
     private String employeeId;
 
     @JsonProperty(value = "firstname")

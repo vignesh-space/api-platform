@@ -26,16 +26,17 @@ public class GroupController {
     private GroupService groupService;
 
     @ApiOperation(value = "Get All Departments in a store", response = Group.class,responseContainer = "List")
-    @RequestMapping(value = "department",method = RequestMethod.GET,produces = "application/json")
+    @RequestMapping(value = "departments",method = RequestMethod.GET,produces = "application/json")
     public List<Group> listDepartments(@RequestParam("store")String name){
         return groupService.listGroups(name);
     }
 
 
     @ApiOperation(value = "Get the Details of an employee in a store", response = Group.class)
-    @RequestMapping(value = "department/{name}",method = RequestMethod.GET,produces = "application/json")
+    @RequestMapping(value = "departments/{name}",method = RequestMethod.GET,produces = "application/json")
     public Group getGroup(@PathVariable("name")String department , @RequestParam("store")String store ){
         return groupService.getGroup(store,department);
     }
+
 
 }
