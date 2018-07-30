@@ -12,9 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,11 +32,13 @@ public class GroupDao {
         this.bizJdbcTemplate = new JdbcTemplate(bizDatasource);
     }
 
-    public List<Group> getGroupList(String storeName){
+    public List<Group> getGroupList(String chainName,String storeName){
         List<Group> groupList = new ArrayList<>();
 
-        int storeId = databaseUtil.getStoreIdbyName(storeName);
-        String SQL = "SELECT name from groups where storeid=?";
+        int storeId = databaseUtil.getStoreIdbyName(chainName,storeName);
+
+        int chainId = databaseUtil.getCompanyIdByName(chainName);
+        String SQL = "SELECT name from groups where storeid=? and markasdelete='Y'";
         bizJdbcTemplate.query(SQL,new Object[]{storeId},new ResultSetExtractor<List<Group>>() {
             @Override
             public List<Group> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
@@ -55,10 +55,10 @@ public class GroupDao {
 
     }
 
-    public Group getGroup(String store,String groupName){
+    public Group getGroup(String chain, String store, String groupName){
         Group group = new Group();
         group.setName(groupName);
-        int storeId = databaseUtil.getStoreIdbyName(store);
+        int storeId = databaseUtil.getStoreIdbyName(chain,store);
         String SQL = "select e.tagoutname , e.employeeid from employees e where e.employeeid in ( select employeeid from employeegroups" +
                 " where groupid = ( select groupid from groups where name= ? and storeid= ?))";
 

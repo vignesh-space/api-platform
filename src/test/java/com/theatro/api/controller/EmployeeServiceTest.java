@@ -31,7 +31,7 @@ public class EmployeeServiceTest {
         employee.setEmployeeId("10");
 
         try {
-            when(employeeService.getEmployee(employee.getEmployeeId(),employee.getFirstName())).thenReturn(employee);
+            when(employeeService.getEmployee("test",employee.getEmployeeId(),employee.getFirstName())).thenReturn(employee);
         } catch (Exception e) {
             e.printStackTrace();
         }

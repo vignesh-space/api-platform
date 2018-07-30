@@ -13,12 +13,12 @@ public class LocationService {
     @Autowired
     LocationDao locationDao;
 
-    public List<Location> fetchLocations(String storename ){
-        return locationDao.getLocations(storename);
+    public List<Location> fetchLocations(String chain,String storename ){
+        return locationDao.getLocations(chain,storename);
     }
 
-    public Location getEmployee(String locationName, String storename){
-        return locationDao.getLocationDetails(locationName,storename);
+    public Location getEmployee(String locationName, String storename,String chain){
+        return locationDao.getLocationDetails(locationName,storename,chain);
     }
 
 }

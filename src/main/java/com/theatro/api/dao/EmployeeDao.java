@@ -34,8 +34,8 @@ public class EmployeeDao {
     }
 
 
-    public Employee getEmployeeDetails(String fullName,String storename){
-        int storeId = databaseUtil.getStoreIdbyName(storename);
+    public Employee getEmployeeDetails(String chain,String fullName,String storename){
+        int storeId = databaseUtil.getStoreIdbyName(chain,storename);
         LOGGER.info("Store ID for store name <{}> is <{}>",storename,storeId);
         Employee employee = new Employee();
         if(storeId < 0 ) {
@@ -66,9 +66,9 @@ public class EmployeeDao {
     }
 
 
-    public List<Employee> getEmployeeList(String storename){
+    public List<Employee> getEmployeeList(String chain,String storename){
         List<Employee> employeeList = new ArrayList<>();
-        int storeId = databaseUtil.getStoreIdbyName(storename);
+        int storeId = databaseUtil.getStoreIdbyName(chain,storename);
         LOGGER.info("Store ID for store name <{}> is <{}>",storename,storeId);
 
         if(storeId > 0){

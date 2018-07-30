@@ -1,7 +1,6 @@
 package com.theatro.api.dao;
 
 import com.theatro.api.dbutils.DatabaseUtil;
-import com.theatro.api.response.Group;
 import com.theatro.api.response.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,10 +28,10 @@ public class LocationDao {
         this.bizJdbcTemplate = new JdbcTemplate(bizDatasource);
     }
 
-    public List<Location> getLocations(String storeName){
+    public List<Location> getLocations(String storeName, String chain){
 
         List<Location> locationList = new ArrayList<>();
-        int storeId = databaseUtil.getStoreIdbyName(storeName);
+        int storeId = databaseUtil.getStoreIdbyName(chain,storeName);
         String SQL = "select location_name from locations where store_id=?";
 
         bizJdbcTemplate.query(SQL,new Object[]{storeId},new ResultSetExtractor<List<Location>>() {
@@ -51,10 +50,9 @@ public class LocationDao {
         return locationList;
     }
 
-    public Location getLocationDetails(String locationName, String storeName){
+    public Location getLocationDetails(String locationName, String storeName,String chain){
         Location location = new Location();
         location.setName(locationName);
-
         return location;
     }
 }

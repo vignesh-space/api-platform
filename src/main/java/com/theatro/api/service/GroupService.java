@@ -5,7 +5,6 @@ import com.theatro.api.response.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -14,10 +13,10 @@ public class GroupService {
     @Autowired
     GroupDao groupDao;
 
-    public List<Group> listGroups(String storeName){
-        return groupDao.getGroupList(storeName);
+    public List<Group> listGroups(String chain,String storeName){
+        return groupDao.getGroupList(chain,storeName);
     }
-    public Group getGroup(String store,String group){
-        return groupDao.getGroup(store,group);
+    public Group getGroup(String chain,String store,String group){
+        return groupDao.getGroup(chain,store,group);
     }
 }

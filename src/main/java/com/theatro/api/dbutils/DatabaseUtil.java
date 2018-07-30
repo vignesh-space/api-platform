@@ -150,15 +150,17 @@ public class DatabaseUtil {
         return storeName;
     }
 
-    public int getStoreIdbyName(String storeName){
+    public int getStoreIdbyName(String chainName,String storeName){
         Connection connection=null;
         PreparedStatement preparedStatement=null;
         ResultSet resultSet=null;
         int id = -1;
         try{
             connection=dataSourceConfiguration.bizDataSource().getConnection();
-            preparedStatement=connection.prepareStatement("SELECT StoreID FROM stores WHERE name=?");
+            int chainId = getCompanyIdByName(chainName);
+            preparedStatement=connection.prepareStatement("SELECT StoreID FROM stores WHERE name=? and companyID=?");
             preparedStatement.setString(1,storeName);
+            preparedStatement.setInt(1,chainId);
             resultSet=preparedStatement.executeQuery();
             while (resultSet.next()){
                 id=resultSet.getInt("StoreID");
