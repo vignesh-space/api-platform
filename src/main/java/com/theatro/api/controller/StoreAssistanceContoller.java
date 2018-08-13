@@ -18,10 +18,11 @@ public class StoreAssistanceContoller {
 
 
     @ApiOperation(value = "Place an Assistance Request to an Department in a Store", response = AssistanceResponse.class,responseContainer = "List")
-    @RequestMapping(value = "assistrequest",method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "storeassist",method = RequestMethod.POST,produces = "application/json")
     public AssistanceResponse requestAssistance (@RequestParam("chain") String chain,@RequestParam("store")String name, @RequestParam("department")String department){
 
-        AssistanceResponse assistanceResponse = new AssistanceResponse();
+        AssistanceResponse assistanceResponse = null;
+
         return assistanceResponse;
     }
 
